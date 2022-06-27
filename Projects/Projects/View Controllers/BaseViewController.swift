@@ -13,6 +13,13 @@ import UIKit
 class BaseViewController: UIViewController {
     let viewModel: ViewModel
     var bag: Set<AnyCancellable> = Set<AnyCancellable>()
+    var loading: Bool = false {
+        didSet {
+            _ = loading ? startLoading() : stopLoading()
+        }
+    }
+    
+    private let progressIndicator = UIActivityIndicatorView()
 
     var shouldAllowInteractivePop: Bool {
         return true
@@ -30,6 +37,26 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupSubviews()
+    }
+    
+    private func setupSubviews() {
+        view.addSubview(progressIndicator)
+        NSLayoutConstraint.activate([
+            progressIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            progressIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        progressIndicator.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func startLoading() {
+        progressIndicator.isHidden = false
+        progressIndicator.startAnimating()
+    }
+    
+    private func stopLoading() {
+        progressIndicator.isHidden = true
+        progressIndicator.stopAnimating()
     }
 }
 
