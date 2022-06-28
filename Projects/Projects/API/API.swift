@@ -30,7 +30,7 @@ class API {
     }()
     
 
-    func fetchProjects() async throws -> [Project] {
+    func fetchProjects() async throws -> ProjectList {
         guard let url = URL(string: Constants.projects) else {
             throw APIError.invalidUrl
         }
@@ -41,7 +41,7 @@ class API {
         
         if let status = status, (200..<300).contains(status) {
             let topicList = try decoder.decode(ProjectList.self, from: data)
-            return topicList.data
+            return topicList
         } else {
             throw APIError.unknownError
         }
