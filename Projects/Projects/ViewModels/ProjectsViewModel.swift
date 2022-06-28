@@ -33,7 +33,7 @@ class ProjectsViewModel: ViewModel {
     }
     
     func getCellViewModelFor(_ index: Int) -> ProjectsCellViewModel  {
-        let project = projects[index]
+        let project = recentProjects[index]
         let team = teamDirectory[project.relationships.team.id]
         return ProjectsCellViewModel(project: project, team: team)
     }
@@ -53,9 +53,11 @@ class ProjectsViewModel: ViewModel {
             return []
         case 5..<10:
             let numberOfItems = projects.count - 5
-            return Array(projects[...numberOfItems])
+            let sortedProjectsByDate = Array(projects.sorted { $0.attributes.updated_at.compare($1.attributes.updated_at) == .orderedDescending }[...numberOfItems])
+            return sortedProjectsByDate
         case 10...:
-            return Array(projects[0...4])
+            let sortedProjectsByDate = Array(projects.sorted { $0.attributes.updated_at.compare($1.attributes.updated_at) == .orderedDescending }[0...4])
+            return sortedProjectsByDate
         default:
             return []
         }

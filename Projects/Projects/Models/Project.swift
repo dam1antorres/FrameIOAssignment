@@ -20,7 +20,7 @@ struct Project: Decodable {
 
 struct ProjectAtrributes: Decodable {
     let name: String
-//    let updated_at: Date
+    let updated_at: Date
 }
 
 struct ProjectRelationship: Decodable {
