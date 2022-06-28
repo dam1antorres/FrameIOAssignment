@@ -46,8 +46,4 @@ class TeamProjectCell: UITableViewCell {
         label.text = viewModel.projectName
     }
     
-    override func prepareForReuse() {
-        label.text = ""
-    }
-    
 }

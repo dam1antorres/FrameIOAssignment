@@ -9,20 +9,20 @@ import Foundation
 
 class ProjectsCellViewModel {
     
-    private let project: Project?
+    private let project: Project
     private let teamInfo: TeamInfo?
     
-    init(project: Project?, team: TeamInfo?) {
+    init(project: Project, team: TeamInfo?) {
         self.project = project
         self.teamInfo = team
     }
     
-    var projectName: String? {
-        project?.attributes.name
+    var projectName: String {
+        project.attributes.name
     }
     
-    var teamName: String? {
-        teamInfo?.attributes.name
+    var teamName: String {
+        teamInfo?.attributes.name ?? "Generic Team"
     }
     
 }

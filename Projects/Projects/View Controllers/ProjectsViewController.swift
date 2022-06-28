@@ -19,7 +19,6 @@ class ProjectsViewController: BaseViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50.0
         tableView.separatorStyle = .none
-        tableView.estimatedSectionHeaderHeight = 50.0
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         tableView.allowsSelection = false
@@ -63,9 +62,20 @@ class ProjectsViewController: BaseViewController {
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink(receiveValue: { [weak self] projects in
+                self?.tableView.restore()
                 self?.tableView.isHidden = false
                 self?.tableView.reloadData()
                 self?.loading = false
+            })
+            .store(in: &bag)
+        
+        projectsViewModel.$fetchError
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink(receiveValue: { [weak self] _ in
+                self?.tableView.isHidden = false
+                self?.loading = false
+                self?.tableView.setEmptyMessage("Oops!, Something went wrong.")
             })
             .store(in: &bag)
     }
@@ -101,8 +111,7 @@ extension ProjectsViewController: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        let recents = projectsViewModel.recentProjects.count != 0 ? 1 : 0
-        return recents + projectsViewModel.teams.count
+        projectsViewModel.numberOfSections
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -111,7 +120,8 @@ extension ProjectsViewController: UITableViewDataSource {
             return projectsViewModel.recentProjects.count
         case 1...:
             return projectsViewModel.getProjectsFromTeam(section).count
-        default: return 0
+        default:
+            return 0
         }
     }
     

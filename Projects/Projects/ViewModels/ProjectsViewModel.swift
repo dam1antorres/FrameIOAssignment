@@ -9,16 +9,10 @@ import Foundation
 
 class ProjectsViewModel: ViewModel {
     
-    let api = API()
+    private let api = API()
     @Published var projects: [Project] = []
     @Published var teams: [TeamInfo] = []
     @Published var fetchError: Error?
-    
-    private var teamDirectory: [String: TeamInfo] {
-        var directory: [String: TeamInfo] = [String: TeamInfo]()
-        teams.forEach { directory[$0.id] = $0 }
-        return directory
-    }
     
     func fetchProjects() {
         Task {
@@ -34,7 +28,7 @@ class ProjectsViewModel: ViewModel {
     
     func getCellViewModelFor(_ index: Int) -> ProjectsCellViewModel  {
         let project = recentProjects[index]
-        let team = teamDirectory[project.relationships.team.id]
+        let team = teams.filter { $0.id == project.relationships.team.id }.first
         return ProjectsCellViewModel(project: project, team: team)
     }
     
@@ -47,12 +41,17 @@ class ProjectsViewModel: ViewModel {
         recentProjects.count != 0 ? "Recents" : nil
     }
     
+    var numberOfSections: Int {
+        let recents = recentProjects.count != 0 ? 1 : 0
+        return recents + teams.count
+    }
+    
     var recentProjects: [Project] {
         switch projects.count {
         case 0..<5:
             return []
         case 5..<10:
-            let numberOfItems = projects.count - 5
+            let numberOfItems = projects.count - 6
             let sortedProjectsByDate = Array(projects.sorted { $0.attributes.updated_at.compare($1.attributes.updated_at) == .orderedDescending }[...numberOfItems])
             return sortedProjectsByDate
         case 10...:

@@ -16,17 +16,19 @@ class ProjectsCell: UITableViewCell {
         }
     }
     
-    private let label: UILabel = {
+    private let projectNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
         return label
     }()
-    private let sublabel: UILabel = {
+    
+    private let teamNameLabel: UILabel = {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.textColor = .lightGray
         return label
     }()
+    
     private let labelsStackView: UIStackView = {
        let stack = UIStackView()
         stack.axis = .vertical
@@ -51,18 +53,13 @@ class ProjectsCell: UITableViewCell {
             labelsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 15.0)
         ])
         labelsStackView.translatesAutoresizingMaskIntoConstraints = false
-        [label, sublabel].forEach { labelsStackView.addArrangedSubview($0) }
+        [projectNameLabel, teamNameLabel].forEach { labelsStackView.addArrangedSubview($0) }
     }
     
     private func updateUI() {
         guard let viewModel = viewModel else { return }
-        label.text = viewModel.projectName
-        sublabel.text = viewModel.teamName
-    }
-    
-    override func prepareForReuse() {
-        label.text = ""
-        sublabel.text = ""
+        projectNameLabel.text = viewModel.projectName
+        teamNameLabel.text = viewModel.teamName
     }
     
 }
