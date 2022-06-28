@@ -19,6 +19,7 @@ class ProjectsCell: UITableViewCell {
     private let projectNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
     
@@ -26,6 +27,7 @@ class ProjectsCell: UITableViewCell {
        let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14.0)
         label.textColor = .lightGray
+        label.setContentHuggingPriority(.required, for: .vertical)
         return label
     }()
     
@@ -49,8 +51,8 @@ class ProjectsCell: UITableViewCell {
         contentView.addSubview(labelsStackView)
         NSLayoutConstraint.activate([
             labelsStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 40.0),
-            labelsStackView.topAnchor.constraint(equalTo: topAnchor, constant: 15.0),
-            labelsStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 15.0)
+            labelsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            labelsStackView.rightAnchor.constraint(equalTo: rightAnchor)
         ])
         labelsStackView.translatesAutoresizingMaskIntoConstraints = false
         [projectNameLabel, teamNameLabel].forEach { labelsStackView.addArrangedSubview($0) }

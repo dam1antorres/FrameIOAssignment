@@ -17,7 +17,7 @@ class ProjectsViewController: BaseViewController {
         tableView.register(ProjectsCell.self, forCellReuseIdentifier: ProjectsCell.reuseIdentifier)
         tableView.register(TeamProjectCell.self, forCellReuseIdentifier: TeamProjectCell.reuseIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 50.0
+        tableView.estimatedRowHeight = 100.0
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
